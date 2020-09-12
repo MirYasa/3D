@@ -48,8 +48,6 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 timerSeconds.textContent = timer.seconds;
             }
-
-            console.log(timer.timeRemaining);
         }
 
         setInterval(updateClock, 1000);

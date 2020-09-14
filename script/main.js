@@ -48,12 +48,66 @@ window.addEventListener('DOMContentLoaded', () => {
             } else {
                 timerSeconds.textContent = timer.seconds;
             }
-
-            console.log(timer.timeRemaining);
         }
 
         setInterval(updateClock, 1000);
     }
+    countTimer('23 september 2020');
 
-    countTimer('13 september 2020');
+    function toggleMenu() {
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+
+        function handlerMenu() {
+            menu.classList.toggle('active-menu');
+        }
+
+        btnMenu.addEventListener('click', handlerMenu);
+        closeBtn.addEventListener('click', handlerMenu);
+
+        menuItems.forEach((item) => {
+            item.addEventListener('click', handlerMenu);
+        });
+    }
+    toggleMenu();
+
+    function togglePopup() {
+
+        const popup = document.querySelector('.popup'),
+            popupBtn = document.querySelectorAll('.popup-btn'),
+            popupClose = document.querySelector('.popup-close');
+        popup.style.opacity = '10%';
+        let i = 0;
+
+        function animate() {
+            i += 10;
+            popup.style.opacity = `${i}%`;
+        }
+
+        popupBtn.forEach((item) => {
+            item.addEventListener('click', () => {
+                popup.style.display = 'block';
+                if (document.documentElement.clientWidth > 768) {
+                    const interval = setInterval(animate, 50);
+                    setTimeout(() => {
+                        if (i > 100) {
+                            clearInterval(interval);
+                            i = 0;
+                        }
+                    }, 900);
+                } else {
+                    popup.style.opacity = '100%';
+                }
+            });
+        });
+
+        popupClose.addEventListener('click', () => {
+            popup.style.display = 'none';
+            popup.style.opacity = '10%';
+        });
+    }
+
+    togglePopup();
 });

@@ -324,4 +324,41 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     };
     calculateCost(100);
+
+    const sendForm = () => {
+        const errorMessage = 'Что-то пошло не так..',
+            loadMessage = 'Загрузка...',
+            successMesage = 'Спасибо! Мы скоро с вами свяжемся',
+            form = document.getElementById('form1'),
+            statusMesage = document.createElement('div');
+
+        statusMesage.style.cssText = `font-size: 2em;`;
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            form.appendChild(statusMesage);
+
+            const request = new XMLHttpRequest();
+
+            request.addEventListener('readystatechange', () => {
+                statusMesage.textContent = loadMessage;
+
+                if (request.readyState !== 4) {
+                    return;
+                }
+                if (request.status === 200) {
+                    statusMesage.textContent = successMesage;
+                } else {
+                    statusMesage.textContent = errorMessage;
+                }
+            });
+
+            request.open('POST', './server.php');
+            request.setRequestHeader('Content-Type', 'multipart/form-data');
+            const formData = new FormData(form);
+            request.send(formData);
+
+        });
+    };
+    sendForm();
 });

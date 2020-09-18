@@ -329,89 +329,45 @@ window.addEventListener('DOMContentLoaded', () => {
         const errorMessage = 'Что-то пошло не так..',
             loadMessage = 'Загрузка...',
             successMesage = 'Спасибо! Мы скоро с вами свяжемся',
-            form1 = document.getElementById('form1'),
-            form2 = document.getElementById('form2'),
-            form3 = document.querySelector('#form3'),
             statusMesage = document.createElement('div'),
             reg = /\w/gi,
             reg2 = /[^0-9+]/g;
 
-        statusMesage.style.cssText = `font-size: 2em;`;
+        statusMesage.style.cssText = `font-size: 2em; color: #fff;`;
 
-        form1.addEventListener('submit', (event) => {
+        document.body.addEventListener('submit', (event) => {
             event.preventDefault();
-            form1.appendChild(statusMesage);
-            const inputs1 = form1.querySelectorAll('input'),
-                formData = new FormData(form1),
+            const target = event.target;
+
+            target.appendChild(statusMesage);
+
+            const inputs = target.querySelectorAll('input'),
+                formData = new FormData(target),
                 body = {};
 
             formData.forEach((item, key) => {
                 body[key] = item;
             });
+
             postData(body);
-            inputs1.forEach((item) => {
+
+            inputs.forEach((item) => {
                 item.value = '';
             });
         });
 
-        form1.addEventListener('input', (event) => {
+        document.body.addEventListener('input', (event) => {
             const target = event.target;
 
             if (target.matches('#form1-phone')) {
                 target.value = target.value.replace(reg2, '');
-            }
-        });
-
-        form2.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form2.appendChild(statusMesage);
-            const inputs2 = form1.querySelectorAll('input'),
-                formData = new FormData(form2),
-                body = {};
-
-            formData.forEach((item, key) => {
-                body[key] = item;
-            });
-            postData(body);
-
-            inputs2.forEach((item) => {
-                item.value = '';
-            });
-        });
-
-        form2.addEventListener('input', (event) => {
-            const target = event.target;
-
-            if (target.matches('#form2-name')) {
+            } else if (target.matches('#form2-name')) {
                 target.value = target.value.replace(reg, '');
             } else if (target.matches('#form2-message')) {
                 target.value = target.value.replace(reg, '');
             } else if (target.matches('#form2-phone')) {
                 target.value = target.value.replace(reg2, '');
-            }
-        });
-
-        form3.addEventListener('submit', (event) => {
-            event.preventDefault();
-            form2.appendChild(statusMesage);
-            const inputs3 = form1.querySelectorAll('input'),
-                formData = new FormData(form3),
-                body = {};
-
-            formData.forEach((item, key) => {
-                body[key] = item;
-            });
-            postData(body);
-
-            inputs3.forEach((item) => {
-                item.value = '';
-            });
-        });
-
-        form3.addEventListener('input', (event) => {
-            const target = event.target;
-
-            if (target.matches('#form3-phone')) {
+            } else if (target.matches('#form3-phone')) {
                 target.value = target.value.replace(reg2, '');
             }
         });
@@ -427,6 +383,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
                 if (request.status === 200) {
                     statusMesage.textContent = successMesage;
+                    setTimeout(() => { statusMesage.textContent = ''; }, 3000);
                 } else {
                     statusMesage.textContent = errorMessage;
                 }

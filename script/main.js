@@ -370,16 +370,14 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.addEventListener('input', (event) => {
             const target = event.target;
 
-            if (target.matches('#form1-phone')) {
+            if (target.matches('.form-phone')) {
                 target.value = target.value.replace(reg2, '');
-            } else if (target.matches('#form2-name')) {
+            }
+            if (target.matches('.form-name')) {
                 target.value = target.value.replace(reg, '');
-            } else if (target.matches('#form2-message')) {
+            }
+            if (target.matches('.mess')) {
                 target.value = target.value.replace(reg, '');
-            } else if (target.matches('#form2-phone')) {
-                target.value = target.value.replace(reg2, '');
-            } else if (target.matches('#form3-phone')) {
-                target.value = target.value.replace(reg2, '');
             }
         });
 

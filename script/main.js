@@ -1,3 +1,4 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable arrow-parens */
 /* eslint-disable eol-last */
 // eslint-disable-next-line strict
@@ -349,7 +350,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 body[key] = item;
             });
 
-            postData(body);
+            postData(body)
+                .then(outPutText);
 
             inputs.forEach((item) => {
                 item.value = '';
@@ -373,25 +375,33 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         const postData = (body) => {
-            const request = new XMLHttpRequest();
+            return new Promise((resolve, reject) => {
+                const request = new XMLHttpRequest();
 
-            request.addEventListener('readystatechange', () => {
-                statusMesage.textContent = loadMessage;
+                request.addEventListener('readystatechange', () => {
+                    statusMesage.textContent = loadMessage;
 
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    statusMesage.textContent = successMesage;
-                    setTimeout(() => { statusMesage.textContent = ''; }, 3000);
-                } else {
-                    statusMesage.textContent = errorMessage;
-                }
+                    if (request.readyState !== 4) {
+                        return;
+                    }
+                    if (request.status === 200) {
+                        resolve();
+                    } else {
+                        statusMesage.textContent = errorMessage;
+                    }
+                });
+
+                request.open('POST', './server.php');
+                request.setRequestHeader('Content-Type', 'aplication/json');
+                request.send(JSON.stringify(body));
             });
+        };
 
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'aplication/json');
-            request.send(JSON.stringify(body));
+        const outPutText = () => {
+            statusMesage.textContent = successMesage;
+            setTimeout(() => {
+                statusMesage.textContent = '';
+            }, 3000);
         };
     };
     sendForm();

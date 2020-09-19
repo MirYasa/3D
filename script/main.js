@@ -328,7 +328,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const sendForm = () => {
         const errorMessage = 'Что-то пошло не так..',
-            loadMessage = 'Загрузка...',
             successMesage = 'Спасибо! Мы скоро с вами свяжемся',
             statusMesage = document.createElement('div'),
             reg = /\w/gi,
@@ -351,7 +350,20 @@ window.addEventListener('DOMContentLoaded', () => {
             });
 
             postData(body)
-                .then(outPutText);
+                .then((response) => {
+
+                    if (response !== 200) {
+                        throw new Error('status network not 200');
+                    }
+                    statusMesage.textContent = successMesage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 3000);
+                })
+                .catch((error) => {
+                    statusMesage.textContent = errorMessage;
+                    console.log(error);
+                });
 
             inputs.forEach((item) => {
                 item.value = '';
@@ -375,33 +387,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         const postData = (body) => {
-            return new Promise((resolve, reject) => {
-                const request = new XMLHttpRequest();
-
-                request.addEventListener('readystatechange', () => {
-                    statusMesage.textContent = loadMessage;
-
-                    if (request.readyState !== 4) {
-                        return;
-                    }
-                    if (request.status === 200) {
-                        resolve();
-                    } else {
-                        statusMesage.textContent = errorMessage;
-                    }
-                });
-
-                request.open('POST', './server.php');
-                request.setRequestHeader('Content-Type', 'aplication/json');
-                request.send(JSON.stringify(body));
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
-        };
-
-        const outPutText = () => {
-            statusMesage.textContent = successMesage;
-            setTimeout(() => {
-                statusMesage.textContent = '';
-            }, 3000);
         };
     };
     sendForm();

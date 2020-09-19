@@ -351,7 +351,16 @@ window.addEventListener('DOMContentLoaded', () => {
             });
 
             postData(body)
-                .then(outPutText);
+                .then(() => {
+                    statusMesage.textContent = successMesage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 3000);
+                })
+                .catch((error) => {
+                    statusMesage.textContent = errorMessage;
+                    console.log(error);
+                });
 
             inputs.forEach((item) => {
                 item.value = '';
@@ -387,7 +396,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     if (request.status === 200) {
                         resolve();
                     } else {
-                        statusMesage.textContent = errorMessage;
+                        reject(request.statusText);
                     }
                 });
 
@@ -395,13 +404,6 @@ window.addEventListener('DOMContentLoaded', () => {
                 request.setRequestHeader('Content-Type', 'aplication/json');
                 request.send(JSON.stringify(body));
             });
-        };
-
-        const outPutText = () => {
-            statusMesage.textContent = successMesage;
-            setTimeout(() => {
-                statusMesage.textContent = '';
-            }, 3000);
         };
     };
     sendForm();

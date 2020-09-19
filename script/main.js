@@ -328,6 +328,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const sendForm = () => {
         const errorMessage = 'Что-то пошло не так..',
+            loadMessage = 'Загрузка...',
             successMesage = 'Спасибо! Мы скоро с вами свяжемся',
             statusMesage = document.createElement('div'),
             reg = /\w/gi,
@@ -349,9 +350,16 @@ window.addEventListener('DOMContentLoaded', () => {
                 body[key] = item;
             });
 
+            const postData = (body) => {
+                return fetch('./server.php', {
+                    method: 'POST',
+                    body: new FormData(body)
+                });
+            };
+
             postData(body)
                 .then((response) => {
-
+                    statusMesage.textContent = loadMessage;
                     if (response !== 200) {
                         throw new Error('status network not 200');
                     }
@@ -373,26 +381,13 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.addEventListener('input', (event) => {
             const target = event.target;
 
-            if (target.matches('.form-phone')) {
+            if (target.type === 'text') {
+                target.value = target.value.replace(reg, '');
+            }
+            if (target.type === 'tel') {
                 target.value = target.value.replace(reg2, '');
             }
-            if (target.matches('.form-name')) {
-                target.value = target.value.replace(reg, '');
-            }
-            if (target.matches('.mess')) {
-                target.value = target.value.replace(reg, '');
-            }
         });
-
-        const postData = (body) => {
-            return fetch('./server.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(body)
-            });
-        };
     };
     sendForm();
 });

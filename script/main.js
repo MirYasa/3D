@@ -331,7 +331,7 @@ window.addEventListener('DOMContentLoaded', () => {
             loadMessage = 'Загрузка...',
             successMesage = 'Спасибо! Мы скоро с вами свяжемся',
             statusMesage = document.createElement('div'),
-            reg = /\w/gi,
+            reg = /[^а-я]/gi,
             reg2 = /[^0-9+]/g;
 
         statusMesage.style.cssText = `font-size: 2em; color: #fff;`;
@@ -357,20 +357,19 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
             };
 
-            postData(body)
+            postData(target)
                 .then((response) => {
                     statusMesage.textContent = loadMessage;
-                    if (response !== 200) {
-                        throw new Error('status network not 200');
+                    if (response.status === 200) {
+                        statusMesage.textContent = successMesage;
+                        setTimeout(() => {
+                            statusMesage.textContent = '';
+                        }, 3000);
                     }
-                    statusMesage.textContent = successMesage;
-                    setTimeout(() => {
-                        statusMesage.textContent = '';
-                    }, 3000);
+
                 })
-                .catch((error) => {
+                .catch(() => {
                     statusMesage.textContent = errorMessage;
-                    console.log(error);
                 });
 
             inputs.forEach((item) => {
@@ -387,7 +386,6 @@ window.addEventListener('DOMContentLoaded', () => {
             if (target.type === 'tel') {
                 target.value = target.value.replace(reg2, '');
             }
-            
         });
     };
     sendForm();

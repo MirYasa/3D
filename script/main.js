@@ -343,30 +343,22 @@ window.addEventListener('DOMContentLoaded', () => {
             target.appendChild(statusMesage);
 
             const inputs = target.querySelectorAll('input'),
-                formData = new FormData(target),
-                body = {};
-
-            formData.forEach((item, key) => {
-                body[key] = item;
-            });
-
-            const postData = (body) => {
-                return fetch('./server.php', {
-                    method: 'POST',
-                    body: new FormData(body)
-                });
-            };
+                postData = (body) => {
+                    return fetch('./server.php', {
+                        method: 'POST',
+                        body: new FormData(body)
+                    });
+                };
+            statusMesage.textContent = loadMessage;
 
             postData(target)
                 .then((response) => {
-                    statusMesage.textContent = loadMessage;
                     if (response.status === 200) {
                         statusMesage.textContent = successMesage;
                         setTimeout(() => {
                             statusMesage.textContent = '';
                         }, 3000);
                     }
-
                 })
                 .catch(() => {
                     statusMesage.textContent = errorMessage;

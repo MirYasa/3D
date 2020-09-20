@@ -1,8 +1,10 @@
+/* eslint-disable arrow-parens */
 const sendForm = () => {
     const errorMessage = 'Что-то пошло не так..',
+        loadMessage = 'Загрузка...',
         successMesage = 'Спасибо! Мы скоро с вами свяжемся',
         statusMesage = document.createElement('div'),
-        reg = /\w/gi,
+        reg = /[^а-я]/gi,
         reg2 = /[^0-9+]/g;
 
     statusMesage.style.cssText = `font-size: 2em; color: #fff;`;
@@ -14,27 +16,25 @@ const sendForm = () => {
         target.appendChild(statusMesage);
 
         const inputs = target.querySelectorAll('input'),
-            formData = new FormData(target),
-            body = {};
+            postData = (body) => {
+                return fetch('./server.php', {
+                    method: 'POST',
+                    body: new FormData(body)
+                });
+            };
+        statusMesage.textContent = loadMessage;
 
-        formData.forEach((item, key) => {
-            body[key] = item;
-        });
-
-        postData(body)
+        postData(target)
             .then((response) => {
-
-                if (response !== 200) {
-                    throw new Error('status network not 200');
+                if (response.status === 200) {
+                    statusMesage.textContent = successMesage;
+                    setTimeout(() => {
+                        statusMesage.textContent = '';
+                    }, 3000);
                 }
-                statusMesage.textContent = successMesage;
-                setTimeout(() => {
-                    statusMesage.textContent = '';
-                }, 3000);
             })
-            .catch((error) => {
+            .catch(() => {
                 statusMesage.textContent = errorMessage;
-                console.log(error);
             });
 
         inputs.forEach((item) => {
@@ -45,25 +45,12 @@ const sendForm = () => {
     document.body.addEventListener('input', (event) => {
         const target = event.target;
 
-        if (target.matches('.form-phone')) {
+        if (target.type === 'text') {
+            target.value = target.value.replace(reg, '');
+        }
+        if (target.type === 'tel') {
             target.value = target.value.replace(reg2, '');
         }
-        if (target.matches('.form-name')) {
-            target.value = target.value.replace(reg, '');
-        }
-        if (target.matches('.mess')) {
-            target.value = target.value.replace(reg, '');
-        }
     });
-
-    const postData = (body) => {
-        return fetch('./server.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-    };
 };
 export default sendForm;

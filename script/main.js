@@ -387,6 +387,7 @@ window.addEventListener('DOMContentLoaded', () => {
             if (target.type === 'tel') {
                 target.value = target.value.replace(reg2, '');
             }
+            
         });
     };
     sendForm();

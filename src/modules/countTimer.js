@@ -45,8 +45,7 @@ const countTimer = (deadLine) => {
         }
     };
 
-    setInterval(updateClock, 1000);
     updateClock();
+    setInterval(updateClock, 1000);
 };
-
 export default countTimer;

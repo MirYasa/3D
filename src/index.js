@@ -12,18 +12,20 @@ import calculateCost from './modules/calculateCost';
 import sendForm from './modules/sendForm';
 
 
-countTimer('23 september 2020');
+document.addEventListener('DOMContentLoaded', () => {
+    countTimer('23 september 2020');
 
-toggleMenu();
+    toggleMenu();
 
-togglePopup();
+    togglePopup();
 
-tabs();
+    tabs();
 
-slider();
+    slider();
 
-showImg();
+    showImg();
 
-calculateCost(100);
+    calculateCost(100);
 
-sendForm();
+    sendForm();
+});

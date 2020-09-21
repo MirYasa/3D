@@ -15,13 +15,14 @@ const sendForm = () => {
 
         target.appendChild(statusMesage);
 
-        const inputs = target.querySelectorAll('input'),
-            postData = (body) => {
-                return fetch('./server.php', {
-                    method: 'POST',
-                    body: new FormData(body)
-                });
-            };
+        const inputs = target.querySelectorAll('input');
+
+        const postData = (body) => {
+            return fetch('./server.php', {
+                method: 'POST',
+                body: new FormData(body)
+            });
+        };
         statusMesage.textContent = loadMessage;
 
         postData(target)
@@ -45,11 +46,23 @@ const sendForm = () => {
     document.body.addEventListener('input', (event) => {
         const target = event.target;
 
-        if (target.type === 'text') {
+        if (target.type === 'text' && target.matches('.calc-item')) {
+            target.value = target.value.replace(reg2, '');
+        } else if (target.matches('.mess') && target.type === 'text') {
+            target.value = target.value.replace(/[^а-я 0-9.,-]/, '');
+        } else if (target.type === 'text') {
             target.value = target.value.replace(reg, '');
         }
         if (target.type === 'tel') {
             target.value = target.value.replace(reg2, '');
+
+            if (target.value.length < 5) {
+                target.setCustomValidity('Введите больше 5-ти символов');
+            } else if (target.value.length > 20) {
+                target.setCustomValidity('Введите меньше 20-ти символов');
+            } else {
+                target.setCustomValidity('');
+            }
         }
     });
 };

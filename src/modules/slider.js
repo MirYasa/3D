@@ -45,6 +45,8 @@ const slider = () => {
     };
 
     const startSlide = () => {
+        slide[0].classList.add('portfolio-item-active');
+        dots[0].classList.add('dot-active');
         interval = setInterval(autoPlay, 4000);
     };
 

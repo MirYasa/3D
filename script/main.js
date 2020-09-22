@@ -55,24 +55,19 @@ window.addEventListener('DOMContentLoaded', () => {
     countTimer('23 september 2020');
 
     function toggleMenu() {
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu');
+        const menu = document.querySelector('menu');
 
         function handlerMenu() {
             menu.classList.toggle('active-menu');
         }
 
-        menu.addEventListener('click', (event) => {
-            let target = event.target;
+        document.addEventListener('click', (event) => {
+            const target = event.target;
 
-            if (target.classList.contains('close-btn')) {
-                handlerMenu();
-            } else if (target.tagName === 'A') {
+            if (!target.matches('.active-menu')) {
                 handlerMenu();
             }
         });
-
-        btnMenu.addEventListener('click', handlerMenu);
     }
     toggleMenu();
 

@@ -59,9 +59,6 @@
         "after": true
       }
     ],
-    "eol-last": [
-      "error"
-    ],
     "func-call-spacing": [
       "error",
       "never"
@@ -202,7 +199,7 @@
     ],
     "arrow-parens": [
       "error",
-      "as-needed"
+      "always"
     ],
     "arrow-body-style": [
       "error",

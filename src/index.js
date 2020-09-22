@@ -1,6 +1,14 @@
-/* eslint-disable eol-last */
 /* eslint-disable strict */
 'use strict';
+
+import '@babel/polyfill';
+import 'nodelist-foreach-polyfill';
+import 'dom-node-polyfills';
+import elementClosest from 'element-closest';
+elementClosest(window);
+import 'formdata-polyfill';
+import 'fetch-polyfill';
+
 
 import countTimer from './modules/countTimer';
 import toggleMenu from './modules/toggleMenu';

@@ -19,9 +19,7 @@ import showImg from './modules/showImg';
 import calculateCost from './modules/calculateCost';
 import sendForm from './modules/sendForm';
 
-
-document.addEventListener('DOMContentLoaded', () => {
-    countTimer('30 dec 2020');
+    countTimer('30 december 2020');
 
     toggleMenu();
 
@@ -36,4 +34,3 @@ document.addEventListener('DOMContentLoaded', () => {
     calculateCost(100);
 
     sendForm();
-});

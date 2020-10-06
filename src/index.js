@@ -21,7 +21,7 @@ import sendForm from './modules/sendForm';
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    countTimer('23 september 2020');
+    countTimer('30 dec 2020');
 
     toggleMenu();
 
